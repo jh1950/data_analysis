@@ -2,9 +2,9 @@
 
 import uvicorn
 
-from config.api import host, port, reload
+from config import api
 
 
 
 if __name__ == "__main__":
-    uvicorn.run("api:app", host=host, port=port, reload=reload)
+    uvicorn.run("api:app", **api)

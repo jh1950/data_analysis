@@ -1,1 +1,1 @@
-from .main import main
+from .test import testrouter
