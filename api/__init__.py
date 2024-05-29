@@ -1,12 +1,15 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from db import engine
 from db.models import Base
 from .routes import testrouter
+from .routes import NN01
 
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="api/static"), name="static")
 
 @app.on_event("startup")
 async def startup():
@@ -24,4 +27,4 @@ def index():
         "Python": "Framework",
     }
 
-app.include_router(testrouter)
+app.include_router(NN01)
