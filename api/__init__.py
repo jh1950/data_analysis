@@ -1,32 +1,28 @@
+import uvicorn, os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from db import engine
-from db.models import Base
-from .routes import testrouter
-from .routes import NN01
+from .routes import main, NN01, testrouter
+from .lifespan import lifespan
+
+load_dotenv()
 
 
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="api/static"), name="static")
 
-@app.on_event("startup")
-async def startup():
-    try:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-    except Exception as e:
-        raise Exception(e._message())
-
-@app.on_event("shutdown")
-def shutdown():
-    pass
-
-@app.get("/")
-def index():
-    return {
-        "Python": "Framework",
-    }
-
+app.include_router(main)
 app.include_router(NN01)
+app.include_router(testrouter)
+
+
+
+def run(app="app:app"):
+    uvicorn.run(
+        app,
+        host=os.getenv("HOST") or "127.0.0.1",
+        port=int(os.getenv("PORT") or 8000),
+        reload=str(os.getenv("RELOAD") or os.getenv("DEBUG")).lower() == "true",
+    )
