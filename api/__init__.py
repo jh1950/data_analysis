@@ -13,9 +13,11 @@ app.mount("/static", StaticFiles(directory="api/static"), name="static")
 
 @app.on_event("startup")
 async def startup():
-    # https://stackoverflow.com/questions/68230481/sqlalchemy-attributeerror-asyncengine-object-has-no-attribute-run-ddl-visit
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    except Exception as e:
+        raise Exception(e._message())
 
 @app.on_event("shutdown")
 def shutdown():
