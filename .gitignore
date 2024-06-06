@@ -1,6 +1,7 @@
 __pycache__
-poetry.lock
 .env
 .python-version
 .vscode
 *.log
+*.csv
+*.sqlite
