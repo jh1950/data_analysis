@@ -4,13 +4,12 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from .routes import main, NN01, testrouter
-from .lifespan import lifespan
 
 load_dotenv()
 
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 app.mount("/static", StaticFiles(directory="api/static"), name="static")
 
 app.include_router(main)
