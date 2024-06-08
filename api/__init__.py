@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from db import init
 from .routes import main, NN01, testrouter
 
 load_dotenv()
@@ -11,6 +12,10 @@ load_dotenv()
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="api/static"), name="static")
+
+@app.on_event("startup")
+async def startup():
+    await init()
 
 app.include_router(main)
 app.include_router(NN01)

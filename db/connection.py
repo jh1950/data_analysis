@@ -4,6 +4,8 @@ from urllib.parse import quote_plus
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from .models import Base
+
 
 
 load_dotenv()
@@ -41,6 +43,13 @@ async def get_session():
             raise
         finally:
             await session.close()
+
+async def init():
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    except Exception as e:
+        raise e
 
 
 

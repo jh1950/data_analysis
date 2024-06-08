@@ -1,8 +1,8 @@
 __pycache__
-.env
-.python-version
-.vscode
+.*
+!.gitignore
+!.env.example
 *.log
 *.csv
-!test.csv
+!TestModel.csv
 *.sqlite
