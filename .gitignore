@@ -5,4 +5,6 @@ __pycache__
 *.log
 *.csv
 !TestModel.csv
+*.xlsx
+!factors.xlsx
 *.sqlite
