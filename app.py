@@ -5,12 +5,12 @@ import sys
 
 
 def usage():
-    print(f"""Usage: {sys.argv[0]} Command
-
-Command:
-  runserver     Start the API Server
-  migrate       DB Migration
-  harvest       Data Harvest and Save as Excel""")
+    print(f"Usage: {sys.argv[0]} Command")
+    print()
+    print(f"Command:")
+    print(f"  runserver     Start the API Server")
+    print(f"  migrate       DB Migration")
+    print(f"  harvest       Data Harvest and Save as Excel")
 
 def run(command):
     match command:

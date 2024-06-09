@@ -55,7 +55,8 @@ SERVICE_DICT = {
         "통계조회조건설정": {
             "service_name": "StatisticSearch",
             "service_param": [
-                "service","API_KEY",
+                "service",
+                "API_KEY",
                 "format",
                 "language",
                 "start_nmb",

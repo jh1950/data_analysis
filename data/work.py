@@ -62,10 +62,10 @@ class API_WORK:
     def api_request(self, target_url, set_params, trans_colname=False):
         res = requests.get(target_url, params=set_params, verify=False)
         res_json = res.json()
-        if res_json.get("RESULT"):
-            if res_json.get("RESULT").get("MESSAGE"):
-                print(res_json.get("RESULT").get("MESSAGE"))
-                return
+        try:
+            return res_json["RESULT"]["MESSAGE"]
+        except:
+            pass
         df = pd.DataFrame(res_json[set_params.get("service")]["row"])
         if trans_colname:
             df = self.trans_colname(df)
