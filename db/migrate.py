@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from .sync_connection import init, engine
+from .connection_sync import init, engine
 from .models import __all__ as models
 
 

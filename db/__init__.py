@@ -1,4 +1,4 @@
 from .models import Base as BaseModel
-# from .sync_connection import engine, Session, get_session, init
-from .async_connection import engine, Session, get_session, init
+# from .connection_sync import engine, Session, get_session, init
+from .connection_async import engine, Session, get_session, init
 from .migrate import migration
