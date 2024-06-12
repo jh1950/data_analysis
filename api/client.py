@@ -38,7 +38,8 @@ class realTime_Graph:
     def start(self):
         asyncio.run(self.receive_data())
 
-def run(pathname="/NN01/fakeStream", *args, **kwargs):
-    url = "http://127.0.0.1:8000" + pathname
+def run(pathname="/NN01/fakeStream", *args, host="127.0.0.1", port=8000, **kwargs):
+    if not pathname.startswith("/"): pathname = "/" + pathname
+    url = f"http://{host}:{port}{pathname}"
     realtime = realTime_Graph(url)
     realtime.start()
