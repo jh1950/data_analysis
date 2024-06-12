@@ -1,7 +1,7 @@
 import os, asyncio
 import pandas as pd
 
-from .connection import init, engine
+from .async_connection import init, engine
 from .models import __all__ as models
 
 
