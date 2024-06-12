@@ -12,22 +12,21 @@ def usage():
     print(f"  migrate       DB Migration")
     print(f"  harvest       Data Harvest and Save as Excel")
 
-def run(command):
+def run(command=None, *args, **kwargs):
     match command:
         case "runserver":
             import api, logs
             api.run("api:app")
         case "migrate":
-            import asyncio
             from db import migration
-            asyncio.run(migration())
+            migration()
         case "harvest":
             from data import harvest
-            harvest()
+            harvest(*args, **kwargs)
         case _:
             usage()
 
 
 
 if __name__ == "__main__":
-    run( (sys.argv[1:] or [None])[0] )
+    run(*sys.argv[1:])
