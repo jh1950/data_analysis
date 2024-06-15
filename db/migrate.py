@@ -6,11 +6,12 @@ from .models import __all__ as models
 
 
 
-def migration():
+def migration(*args, **kwargs):
     init()
     with engine.connect() as conn:
         for model in models:
             table_name = model.__tablename__
+            if args and table_name not in args: continue
             path = os.path.realpath(os.path.join(__file__, "..", "..", "storage", "csv", f"{table_name}.csv"))
             try: ext = os.path.splitext(path)[1]
             except: ext = ".csv"
