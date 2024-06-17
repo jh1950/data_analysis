@@ -6,8 +6,10 @@ from fastapi.responses import StreamingResponse, JSONResponse
 from sqlalchemy import select
 from datetime import datetime
 
+from ml import ML
 from db import engine, Session
 from db.models import TestModel
+from ..models import DataInput, PredictOutput
 
 random.seed()
 logger = logging.getLogger("NN01")
@@ -18,7 +20,19 @@ templates = Jinja2Templates(directory="api/templates")
 NN01 = APIRouter(
     prefix="/NN01",
     tags=["NN01"],
+    # lifespan=lifespan,
 )
+
+ml_models = {}
+@NN01.on_event("startup")
+def NN01_startup():
+    ml_models["predict"] = ML("NN01").predict
+    ml_models["train"] = ML("NN01").train
+@NN01.on_event("shutdown")
+def NN01_shutdown():
+    ml_models.clear()
+
+
 
 @NN01.get("/")
 async def NN01_Home(req: Request):
@@ -40,3 +54,15 @@ async def NN01_fakeStream(req: Request):
     res.headers["Cache-Control"] = "no-cache"
     res.headers["X-Accel-Buffering"] = "no"
     return res
+
+@NN01.post("/predict", tags=['NN01'], response_model=PredictOutput)
+async def NN01_predict(data: DataInput, req: Request):
+    logger.info("Client %s connected for prediction result", req.client.host)
+    result =  ml_models["predict"](data.x)
+    return {'prediction' : result}
+
+@NN01.post("/train", tags=['NN01'], response_model=PredictOutput)
+async def NN01_train(req: Request):
+    logger.info("Client %s connected for train", req.client.host)
+    result =  ml_models["train"]()
+    return {'prediction' : result}
